@@ -174,7 +174,7 @@ void loop() {
         digitalWrite(ledK, LOW);
 
         a = 1; // Ponemos la variable flag en 1
-        //delay(150);
+        delay(150);
       }
       else if (a == 1) // Si la variable flag esta en 1
       {
@@ -189,7 +189,7 @@ void loop() {
         digitalWrite(ledK, LOW);
          
          a = 0; // Ponemos la variable flag en 0 para evitar los rebotes
-         //delay(150);
+         delay(150);
       }
     }
 }
