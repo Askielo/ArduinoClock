@@ -37,14 +37,15 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 int X; // Variables que almacenaran la coordenada
 int Y; // X, Y donde presionemos y la variable Z 
 int Z; // almacenara la presion realizada
+int h = 16 ;
+int m = 28 ;
+int s = 00;
 
 int a = 0; // variable "flag" para control rebotes
 #define ledA 21
 #define ledK 20
 
 
-
-int oldcolor, currentcolor;
 
 void setup() {
 
@@ -82,11 +83,14 @@ drawBorder();
    
   tft.fillScreen(BLACK);
 
-  currentcolor = RED;
 
-  
+
   pinMode(13, OUTPUT);
 
+  
+
+
+// Boton de alarma
   tft.fillRect(140, 170, 160, 60, WHITE); //Dibujamos el boton
   tft.setCursor(170,185);  // Colocamos el cursor
   tft.setTextSize(3);    // Especificamos el tamaño del texto
@@ -96,7 +100,58 @@ drawBorder();
 }
 #define MINPRESSURE 10
 #define MAXPRESSURE 1000
+
 void loop() {
+
+  /*
+  for (s= 0; s <60; s++){
+    //Horas
+    tft.fillRect(60, 70, 239, 60, BLACK);
+    tft.setCursor (60,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(h);
+
+    //:
+    tft.setCursor (110,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(':');
+    //Minutos
+    tft.setCursor (140,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(m);
+
+    //:
+    tft.setCursor (190,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(':');
+    
+    //Segundos
+    tft.setCursor (220,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(s);
+   
+    delay(1000);
+    }
+  
+  if( s>59){
+    s= 00;
+    m= m+1; 
+    }
+  if (m>59){
+    m=00;
+    h=h+1;
+    }
+  if (h==24){
+    h=00;
+    m=00;
+    s=00; 
+    }*/
+  
   lecturaPanel(); // Realizamos lectura del panel para detectar presion y coordenadas
       
     // Si la pulsación del eje X se produce entre los puntos 40 y 160
@@ -119,7 +174,7 @@ void loop() {
         digitalWrite(ledK, LOW);
 
         a = 1; // Ponemos la variable flag en 1
-        delay(150);
+        //delay(150);
       }
       else if (a == 1) // Si la variable flag esta en 1
       {
@@ -134,9 +189,9 @@ void loop() {
         digitalWrite(ledK, LOW);
          
          a = 0; // Ponemos la variable flag en 0 para evitar los rebotes
-         delay(150);
+         //delay(150);
       }
-    } 
+    }
 }
 
 TSPoint waitOneTouch() {
