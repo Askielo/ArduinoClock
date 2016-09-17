@@ -37,9 +37,12 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 int X; // Variables que almacenaran la coordenada
 int Y; // X, Y donde presionemos y la variable Z 
 int Z; // almacenara la presion realizada
-int h = 16 ;
-int m = 28 ;
-int s = 00;
+int h = 18;
+int m = 10;
+int s = 0;
+unsigned long antMillis = 0;
+const long intervalo = 1000;
+
 
 int a = 0; // variable "flag" para control rebotes
 #define ledA 21
@@ -103,6 +106,58 @@ drawBorder();
 
 void loop() {
 
+  unsigned long actualMillis = millis();
+
+  if (actualMillis - antMillis >= intervalo) {
+    
+    antMillis = actualMillis;
+    s= antMillis/intervalo;
+    
+    Serial.println(s);
+    //Horas
+    tft.fillRect(60, 70, 239, 60, BLACK);
+    tft.setCursor (60,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(h);
+
+    //:
+    tft.setCursor (110,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(':');
+    //Minutos
+    tft.setCursor (140,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(m);
+
+    //:
+    tft.setCursor (190,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(':');
+    
+    //Segundos
+    tft.setCursor (220,70);
+    tft.setTextSize(4);
+    tft.setTextColor(GREEN);
+    tft.println(s);
+    
+      if( s>59){
+      s= 00;
+      m= m+1; 
+      }
+      if (m>59){
+      m=00;
+      h=h+1;
+      }
+      if (h==24){
+      h=00;
+      m=00;
+      s=00; 
+      }
+   }
   /*
   for (s= 0; s <60; s++){
     //Horas
