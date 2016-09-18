@@ -80,7 +80,7 @@ drawBorder();
   tft.setCursor (90, 150);
   tft.setTextSize (1);
   tft.setTextColor(BLACK);
-  tft.println("Tocamela para seguir");
+  tft.println("Tocar para seguir");
 
    waitOneTouch();
 
