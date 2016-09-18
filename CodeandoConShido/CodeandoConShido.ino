@@ -37,9 +37,10 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 int X; // Variables que almacenaran la coordenada
 int Y; // X, Y donde presionemos y la variable Z 
 int Z; // almacenara la presion realizada
-int h = 18;
-int m = 10;
+int h = 21;
+int m = 8;
 int s = 0;
+int mi= 0;
 unsigned long antMillis = 0;
 const long intervalo = 1000;
 
@@ -104,16 +105,21 @@ drawBorder();
 #define MINPRESSURE 10
 #define MAXPRESSURE 1000
 
+unsigned long offset = 0;
+boolean setupEnded = false;
 void loop() {
 
-  unsigned long actualMillis = millis();
+  unsigned long actualMillis = millis() + offset;
 
   if (actualMillis - antMillis >= intervalo) {
-    
+    if (setupEnded != true){
+
+      offset+= 1000ul*60ul*5ul;
+      }
     antMillis = actualMillis;
-    s= antMillis/intervalo;
+    mi= antMillis/intervalo;
     
-    Serial.println(s);
+    Serial.println(mi);
     //Horas
     tft.fillRect(60, 70, 239, 60, BLACK);
     tft.setCursor (60,70);
@@ -132,21 +138,13 @@ void loop() {
     tft.setTextColor(GREEN);
     tft.println(m);
 
-    //:
-    tft.setCursor (190,70);
-    tft.setTextSize(4);
-    tft.setTextColor(GREEN);
-    tft.println(':');
-    
-    //Segundos
-    tft.setCursor (220,70);
-    tft.setTextSize(4);
-    tft.setTextColor(GREEN);
-    tft.println(s);
-    
-      if( s>59){
-      s= 00;
-      m= m+1; 
+      if( mi>59){
+      mi= 00;
+      s= s+1; 
+      }
+      if (s>59){
+      s=00;
+      m=m+1;
       }
       if (m>59){
       m=00;
@@ -157,6 +155,7 @@ void loop() {
       m=00;
       s=00; 
       }
+     
    }
   /*
   for (s= 0; s <60; s++){
@@ -228,6 +227,8 @@ void loop() {
         digitalWrite(ledA, HIGH);
         digitalWrite(ledK, LOW);
 
+        setupEnded = true;
+
         a = 1; // Ponemos la variable flag en 1
         delay(150);
       }
@@ -242,6 +243,7 @@ void loop() {
          
         digitalWrite(ledA, LOW);
         digitalWrite(ledK, LOW);
+        setupEnded = true;
          
          a = 0; // Ponemos la variable flag en 0 para evitar los rebotes
          delay(150);
